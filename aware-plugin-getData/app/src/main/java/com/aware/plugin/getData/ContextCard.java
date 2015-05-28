@@ -11,7 +11,7 @@ import com.aware.utils.IContextCard;
 public class ContextCard implements IContextCard {
 
     //Empty constructor used to instantiate this card
-    public ContextCard(){};
+    public ContextCard(){}
 
     //You may use sContext on uiChanger to do queries to databases, etc.
     private Context sContext;
@@ -34,7 +34,10 @@ public class ContextCard implements IContextCard {
         //Initialize UI elements from the card
         text = (TextView) card.findViewById(R.id.text);
 
-        String s = DataHandler.getAccelerometerData(context.getContentResolver());
+        long start = System.currentTimeMillis() - 20000;
+        long end = System.currentTimeMillis() - 100000;
+
+        String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);
         if (s != null)
             text.setText(s);
         else

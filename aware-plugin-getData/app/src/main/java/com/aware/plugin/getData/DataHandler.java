@@ -20,10 +20,7 @@ public class DataHandler {
     /* Checks if external storage is available for read and write */
     private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
     private static File getStorageDir(String name) {
@@ -41,17 +38,17 @@ public class DataHandler {
         if (!isExternalStorageWritable())
             return null;
 
-        // Query for data of the last 100 000 ms
+        // Query for data
         Cursor cursor = resolver.query(Accelerometer_Provider.Accelerometer_Data.CONTENT_URI,
                 new String[]{Accelerometer_Provider.Accelerometer_Data.VALUES_0, Accelerometer_Provider.Accelerometer_Data.VALUES_1, Accelerometer_Provider.Accelerometer_Data.VALUES_2, Accelerometer_Provider.Accelerometer_Data.TIMESTAMP},
-                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " BETWEEN " + start + " AND " + end, null, null);
+                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " > " + end, null, null);
 
         // Got data ?
         if (!cursor.moveToFirst())
             return null;
 
         // Data in a string
-        String result = new String("X            Y             Z\n");
+        String result = "X            Y             Z\n";
         do {
             double X = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.VALUES_0));
             double Y = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.VALUES_1));
