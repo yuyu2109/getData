@@ -41,7 +41,7 @@ public class DataHandler {
         // Query for data
         Cursor cursor = resolver.query(Accelerometer_Provider.Accelerometer_Data.CONTENT_URI,
                 new String[]{Accelerometer_Provider.Accelerometer_Data.VALUES_0, Accelerometer_Provider.Accelerometer_Data.VALUES_1, Accelerometer_Provider.Accelerometer_Data.VALUES_2, Accelerometer_Provider.Accelerometer_Data.TIMESTAMP},
-                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " > " + end, null, null);
+                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " between " + start + " AND " + end, null, null);
 
         // Got data ?
         if (!cursor.moveToFirst())

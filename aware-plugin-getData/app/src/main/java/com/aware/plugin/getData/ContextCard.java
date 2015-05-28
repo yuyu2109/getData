@@ -34,7 +34,7 @@ public class ContextCard implements IContextCard {
         //Initialize UI elements from the card
         text = (TextView) card.findViewById(R.id.text);
 
-        long start = System.currentTimeMillis() - 20000;
+        long start = System.currentTimeMillis() - 200000;
         long end = System.currentTimeMillis() - 100000;
 
         String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);

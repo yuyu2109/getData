@@ -21,7 +21,6 @@ public class Plugin extends Aware_Plugin {
 
         // Activate sensor
         Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
-        //sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));
 
         //Any active plugin/sensor shares its overall context using broadcasts
         CONTEXT_PRODUCER = new ContextProducer() {
