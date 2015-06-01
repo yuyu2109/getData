@@ -21,6 +21,10 @@ public class Plugin extends Aware_Plugin {
 
         // Activate sensor
         Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, true);
+        Aware.setSetting(this, Aware_Preferences.FREQUENCY_ACCELEROMETER, 200000);
+
+        Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_GYROSCOPE, true);
+        Aware.setSetting(this, Aware_Preferences.FREQUENCY_GYROSCOPE, 200000);
 
         //Any active plugin/sensor shares its overall context using broadcasts
         CONTEXT_PRODUCER = new ContextProducer() {
@@ -57,6 +61,7 @@ public class Plugin extends Aware_Plugin {
 
         //Deactivate any sensors/plugins you activated here
         Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_ACCELEROMETER, false);
+        Aware.setSetting(getApplicationContext(), Aware_Preferences.STATUS_GYROSCOPE, false);
 
         //Ask AWARE to apply your settings
         sendBroadcast(new Intent(Aware.ACTION_AWARE_REFRESH));

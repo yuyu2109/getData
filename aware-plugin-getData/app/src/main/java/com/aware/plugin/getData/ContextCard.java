@@ -38,6 +38,8 @@ public class ContextCard implements IContextCard {
         long end = System.currentTimeMillis() - 100000;
 
         String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);
+        DataHandler.getGyroscopeData(context.getContentResolver(), start, end);
+
         if (s != null)
             text.setText(s);
         else

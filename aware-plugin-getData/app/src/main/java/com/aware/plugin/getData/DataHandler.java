@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.aware.providers.Accelerometer_Provider;
+import com.aware.providers.Gyroscope_Provider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,26 +42,77 @@ public class DataHandler {
         // Query for data
         Cursor cursor = resolver.query(Accelerometer_Provider.Accelerometer_Data.CONTENT_URI,
                 new String[]{Accelerometer_Provider.Accelerometer_Data.VALUES_0, Accelerometer_Provider.Accelerometer_Data.VALUES_1, Accelerometer_Provider.Accelerometer_Data.VALUES_2, Accelerometer_Provider.Accelerometer_Data.TIMESTAMP},
-                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " between " + start + " AND " + end, null, null);
+                Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " between " + start + " AND " + end, null, Accelerometer_Provider.Accelerometer_Data.TIMESTAMP + " ASC");
 
         // Got data ?
         if (!cursor.moveToFirst())
             return null;
 
         // Data in a string
-        String result = "X            Y             Z\n";
+        String result = "TIME         X            Y             Z\n";
         do {
+            double time = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.TIMESTAMP));
             double X = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.VALUES_0));
             double Y = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.VALUES_1));
             double Z = cursor.getDouble(cursor.getColumnIndex(Accelerometer_Provider.Accelerometer_Data.VALUES_2));
 
-            result += X + "    " + Y + "    " + Z + "\n";
+            result += time + "     "  + X + "    " + Y + "    " + Z + "\n";
         } while (cursor.moveToNext());
         cursor.close();
 
         // Writing data in a file
         File dir = getStorageDir("Logs");
         File file = new File(dir, "LogAccelerometer.txt");
+        try {
+            if (!dir.exists())
+                dir.createNewFile();
+            if (file.exists())
+                file.delete();
+            file.createNewFile();
+
+            FileOutputStream fOut = new FileOutputStream(file);
+            OutputStreamWriter myOutWriter =
+                    new OutputStreamWriter(fOut);
+            myOutWriter.append(result);
+            myOutWriter.close();
+            fOut.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String getGyroscopeData(ContentResolver resolver, long start, long end) {
+        // Test if dir is available
+        if (!isExternalStorageWritable())
+            return null;
+
+        // Query for data
+        Cursor cursor = resolver.query(Gyroscope_Provider.Gyroscope_Data.CONTENT_URI,
+                new String[]{Gyroscope_Provider.Gyroscope_Data.VALUES_0, Gyroscope_Provider.Gyroscope_Data.VALUES_1, Gyroscope_Provider.Gyroscope_Data.VALUES_2, Gyroscope_Provider.Gyroscope_Data.TIMESTAMP},
+                Gyroscope_Provider.Gyroscope_Data.TIMESTAMP + " between " + start + " AND " + end, null, Gyroscope_Provider.Gyroscope_Data.TIMESTAMP + " ASC");
+
+        // Got data ?
+        if (!cursor.moveToFirst())
+            return null;
+
+        // Data in a string
+        String result = "TIME         X            Y             Z\n";
+        do {
+            double time = cursor.getDouble(cursor.getColumnIndex(Gyroscope_Provider.Gyroscope_Data.TIMESTAMP));
+            double X = cursor.getDouble(cursor.getColumnIndex(Gyroscope_Provider.Gyroscope_Data.VALUES_0));
+            double Y = cursor.getDouble(cursor.getColumnIndex(Gyroscope_Provider.Gyroscope_Data.VALUES_1));
+            double Z = cursor.getDouble(cursor.getColumnIndex(Gyroscope_Provider.Gyroscope_Data.VALUES_2));
+
+            result += time + "     "  + X + "    " + Y + "    " + Z + "\n";
+        } while (cursor.moveToNext());
+        cursor.close();
+
+        // Writing data in a file
+        File dir = getStorageDir("Logs");
+        File file = new File(dir, "LogGyroscope.txt");
         try {
             if (!dir.exists())
                 dir.createNewFile();
