@@ -35,15 +35,16 @@ public class ContextCard implements IContextCard {
         text = (TextView) card.findViewById(R.id.text);
 
         long start = System.currentTimeMillis() - 200000;
-        long end = System.currentTimeMillis() - 100000;
+        long end = System.currentTimeMillis() - 180000;
 
-        String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);
-        DataHandler.getGyroscopeData(context.getContentResolver(), start, end);
+        String s = DataHandler.getData(context.getContentResolver(), start, end);
+        /*String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);
+        DataHandler.getGyroscopeData(context.getContentResolver(), start, end);*/
 
-        if (s != null)
-            text.setText(s);
-        else
+        if (s == null)
             text.setText("Erreur");
+        else
+            text.setText("Okay");
 
         //Return the card to AWARE/apps
         return card;
