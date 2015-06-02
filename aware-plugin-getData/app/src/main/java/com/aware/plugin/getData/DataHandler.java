@@ -140,7 +140,7 @@ public class DataHandler {
     public static String getData(ContentResolver resolver, long start, long end) {
         // Test if dir is available
         if (!isExternalStorageWritable())
-            return null;
+            return "STORAGE";
 
         // Query for data
         Cursor cursor1 = resolver.query(Accelerometer_Provider.Accelerometer_Data.CONTENT_URI,
@@ -153,7 +153,7 @@ public class DataHandler {
 
         // Got data ?
         if (!cursor1.moveToFirst() || !cursor2.moveToFirst())
-            return null;
+            return "NO DATA";
 
         // Data in a string
         String result = "";
@@ -180,20 +180,21 @@ public class DataHandler {
         try {
             if (!dir.exists())
                 dir.createNewFile();
-            if (file.exists())
-                file.delete();
-            file.createNewFile();
+            if (!file.exists())
+                //file.delete();
+                file.createNewFile();
 
             FileOutputStream fOut = new FileOutputStream(file, true);
-            OutputStreamWriter myOutWriter =
+            /*OutputStreamWriter myOutWriter =
                     new OutputStreamWriter(fOut);
-            myOutWriter.append(result);
-            myOutWriter.close();
+            myOutWriter.append(result)
+            myOutWriter.close();*/
+            fOut.write(result.getBytes());
             fOut.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        return "OKAY";
     }
 }

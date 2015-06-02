@@ -41,10 +41,7 @@ public class ContextCard implements IContextCard {
         /*String s = DataHandler.getAccelerometerData(context.getContentResolver(), start, end);
         DataHandler.getGyroscopeData(context.getContentResolver(), start, end);*/
 
-        if (s == null)
-            text.setText("Erreur");
-        else
-            text.setText("Okay");
+        text.setText(s);
 
         //Return the card to AWARE/apps
         return card;
